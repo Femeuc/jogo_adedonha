@@ -1,0 +1,10 @@
+npm init -y
+git init
+index.js
+npm install cors dotenv express socket.io
+
+index.js imports and middleware
+client folder
+.gitignore
+.env
+npm start script
