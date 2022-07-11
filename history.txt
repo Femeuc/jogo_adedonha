@@ -8,3 +8,5 @@ client folder
 .gitignore
 .env
 npm start script
+
+html and css of the page
