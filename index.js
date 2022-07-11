@@ -1,5 +1,4 @@
 // IMPORTS
-const { Socket } = require('dgram');
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -20,13 +19,10 @@ app.get('/', (req, res) => {
     res.render('index.html');
 });
 
-let port = process.env.PORT;
-if( process.env.WHERE == 'dev' ) {
-    server.listen(port, "0.0.0.0" || "localhost", () => {
-        console.log('listening on *:3000');
-    });  
-} else {
-    server.listen(port, () => {
-        console.log('listening on port ' + port);
-    });  
-}
+server.listen( process.env.PORT , "0.0.0.0" || "localhost", () => {
+    console.log('listening on port ' + process.env.PORT);
+});  
+
+io.on('connection', (socket) => {
+    console.log(`${socket.id} connected`);
+});
