@@ -11,10 +11,11 @@ function create_room() {
     socket.emit('CREATE_ROOM', username, room, (success) => {
         if( !success ) {
             alert('Já existe uma sala com esse nome');
-        }
+            return;
+        } 
+        console.log(`User "${username}" creates room named "${room}"`);
+        console.log("Carregando jogo...");
     });
-
-    console.log(`User "${username}" creates room named "${room}"`);
 }
 
 function enter_room() {
@@ -36,9 +37,10 @@ function enter_room() {
             alert('Nome já está em uso');
             return;
         }
-    });
 
-    console.log(`User "${username}" enters room named "${room}"`);
+        console.log(`User "${username}" enters room named "${room}"`);
+        console.log('Carregando jogo...');
+    });
 }
 
 function server_state() {

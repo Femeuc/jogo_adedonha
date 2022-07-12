@@ -10,11 +10,13 @@ const cors = require('cors');
 require('dotenv').config()
 
 // GLOBAL VARIABLES
-users = [];
-// {
-//   name: 'name',
-//   id: 'id'
-// }
+rooms = [];
+// name: room,
+// users: [{
+//   id: socket.id,
+//   name: username
+// ]},
+// game_state: 0
 
 // cors config
 app.use(cors({
@@ -51,11 +53,7 @@ io.on('connection', (socket) => {
         socket.join(room);
         console.log(`User "${username}" creates room named "${room}"`);
 
-        users.push({
-            name: username,
-            id: socket.id
-        });
-        //begin_room();
+        add_user_to_room( room, socket.id, username );
     });
 
     socket.on('ENTER_ROOM', (username, room, callback) => {
@@ -74,36 +72,26 @@ io.on('connection', (socket) => {
         socket.join(room);
         console.log(`User "${username}" enters room named "${room}"`);
 
-        users.push({
-            name: username,
-            id: socket.id
-        });
+        add_user_to_room( room, socket.id, username );
         socket.to(room).emit("JOIN_ROOM", socket.id, room);
     });
 });
 
+
+/* #region General functions */
 function get_server_state() {
     const state = {
         rooms: get_all_rooms(),
         users: get_all_users(),
-        users_in_each_room: get_each_room_and_its_users()
+        users_in_each_room: rooms
     }
     console.log(`========== Server state: ==========`);
     console.table(state);
     return state;
 }
 
-function get_all_rooms() {
-    const arr = Array.from(io.sockets.adapter.rooms);
-    const filtered = arr.filter(room => !room[1].has(room[0]));
-    const res = filtered.map(i => i[0]);
-    return res;
-}
-
-function does_room_exist( room ) {
-    const rooms = get_all_rooms();
-    if( rooms.length < 1 ) return false;
-    return rooms.includes( room );
+function get_all_sockets_ids() {
+    return sockets_ids = Array.from(io.sockets.sockets).map(socket => socket[0]);
 }
 
 function get_all_users() {
@@ -129,30 +117,30 @@ function get_all_users() {
 }
 
 function get_id_username(id) {
-    for (let i = 0; i < users.length; i++) {
-        if( id == users[i].id ) {
-            return users[i].name;
+    for (let i = 0; i < rooms.length; i++) {
+        for (let j = 0; j < rooms[i].users.length; j++) {
+            if( id == rooms[i].users[j].id ) {
+                return rooms[i].users[j].name;
+            }
         }
     }
     return false;
 }
+/* #endregion */
 
-function get_all_sockets_ids() {
-    return sockets_ids = Array.from(io.sockets.sockets).map(socket => socket[0]);
+
+/* #region Rooms related functions */
+function get_all_rooms() {
+    const arr = Array.from(io.sockets.adapter.rooms);
+    const filtered = arr.filter(room => !room[1].has(room[0]));
+    const res = filtered.map(i => i[0]);
+    return res;
 }
 
-function get_each_room_and_its_users() {
+function does_room_exist( room ) {
     const rooms = get_all_rooms();
-
-    const players_in_each_room = [];
-    
-    rooms.forEach(room => {
-        players_in_each_room.push({
-            room_name: room,
-            users: get_ids_of_users_from_room(room)
-        });
-    });
-    return players_in_each_room;
+    if( rooms.length < 1 ) return false;
+    return rooms.includes( room );
 }
 
 function get_ids_of_users_from_room( room ) {
@@ -167,3 +155,26 @@ function is_name_available(name, room) {
     });
     return !users_in_the_room.includes(name);
 }
+
+function add_user_to_room( room, id, name ) {
+    for (let i = 0; i < rooms.length; i++) {
+        if( rooms[i].name == room ) {
+            rooms[i].users.push({
+                id,
+                name
+            });
+            return;
+        }
+    }
+
+    // If room does not exist, let's create it
+    rooms.push({
+        name: room,
+        users: [{
+            id,
+            name
+        }], 
+        game_state: 0
+    });
+}
+/* #endregion */

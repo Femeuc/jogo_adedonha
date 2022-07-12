@@ -10,3 +10,4 @@ client folder
 npm start script
 
 html and css of the page
+rooms creation and joining
