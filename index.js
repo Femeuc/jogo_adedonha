@@ -12,7 +12,8 @@ require('dotenv').config()
 // GLOBAL VARIABLES
 users = [];
 // {
-//
+//   name: 'name',
+//   id: 'id'
 // }
 
 // cors config
@@ -50,7 +51,11 @@ io.on('connection', (socket) => {
         socket.join(room);
         console.log(`User "${username}" creates room named "${room}"`);
 
-        begin_room();
+        users.push({
+            name: username,
+            id: socket.id
+        });
+        //begin_room();
     });
 
     socket.on('ENTER_ROOM', (username, room, callback) => {
@@ -59,25 +64,36 @@ io.on('connection', (socket) => {
             return;
         }
         if( !does_room_exist(room) ) {
-            callback( false );
+            callback( false, false);
+            return;
+        }
+        if( !is_name_available(username, room) ) {
+            callback( true, false );
             return;
         }
         socket.join(room);
         console.log(`User "${username}" enters room named "${room}"`);
+
+        users.push({
+            name: username,
+            id: socket.id
+        });
         socket.to(room).emit("JOIN_ROOM", socket.id, room);
     });
 });
 
 function get_server_state() {
     const state = {
-        rooms: all_rooms()
+        rooms: get_all_rooms(),
+        users: get_all_users(),
+        users_in_each_room: get_each_room_and_its_users()
     }
     console.log(`========== Server state: ==========`);
     console.table(state);
     return state;
 }
 
-function all_rooms() {
+function get_all_rooms() {
     const arr = Array.from(io.sockets.adapter.rooms);
     const filtered = arr.filter(room => !room[1].has(room[0]));
     const res = filtered.map(i => i[0]);
@@ -85,7 +101,69 @@ function all_rooms() {
 }
 
 function does_room_exist( room ) {
-    const rooms = all_rooms();
+    const rooms = get_all_rooms();
     if( rooms.length < 1 ) return false;
     return rooms.includes( room );
+}
+
+function get_all_users() {
+    const ids = get_all_sockets_ids();
+    const all_users = [];
+
+    for (let i = 0; i < ids.length; i++) {
+        const id_username = get_id_username( ids[i] );
+        if(id_username) {
+            all_users.push({
+                name: id_username,
+                id: ids[i]
+            });
+        } else {
+            all_users.push({
+                name: '',
+                id: ids[i]
+            });
+        }
+    }
+
+    return all_users;
+}
+
+function get_id_username(id) {
+    for (let i = 0; i < users.length; i++) {
+        if( id == users[i].id ) {
+            return users[i].name;
+        }
+    }
+    return false;
+}
+
+function get_all_sockets_ids() {
+    return sockets_ids = Array.from(io.sockets.sockets).map(socket => socket[0]);
+}
+
+function get_each_room_and_its_users() {
+    const rooms = get_all_rooms();
+
+    const players_in_each_room = [];
+    
+    rooms.forEach(room => {
+        players_in_each_room.push({
+            room_name: room,
+            users: get_ids_of_users_from_room(room)
+        });
+    });
+    return players_in_each_room;
+}
+
+function get_ids_of_users_from_room( room ) {
+    return Array.from(io.sockets.adapter.rooms.get(room));
+}
+
+function is_name_available(name, room) {
+    const ids = get_ids_of_users_from_room(room);
+    const users_in_the_room = [];
+    ids.forEach(id => {
+        users_in_the_room.push( get_id_username(id) );
+    });
+    return !users_in_the_room.includes(name);
 }

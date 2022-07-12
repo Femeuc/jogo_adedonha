@@ -27,9 +27,14 @@ function enter_room() {
         return;
     }
 
-    socket.emit('ENTER_ROOM', username, room, (success) => {
-        if( !success ) {
+    socket.emit('ENTER_ROOM', username, room, (was_found, is_name_available) => {
+        if( !was_found ) {
             alert('Sala não encontrada');
+            return;
+        }
+        if( !is_name_available ) {
+            alert('Nome já está em uso');
+            return;
         }
     });
 
