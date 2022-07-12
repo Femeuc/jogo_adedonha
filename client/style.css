@@ -1,4 +1,4 @@
-/* Basic */
+/* #region Basic */
 @import url('https://fonts.googleapis.com/css2?family=Titan+One&display=swap');
 * {
     margin: 0;
@@ -47,8 +47,9 @@ h2 {
 
     --font-color: #ffffff;
 }
+/* #endregion */
 
-/* home page */
+/* #region home page */
 #home_page {
     background-color: var(--Main-color);
     width: fit-content;
@@ -88,6 +89,7 @@ h2 {
     background-color: var(--Dark-bg);
     cursor: pointer;
 }
+/* #endregion */
 
 /* Page Container */
 #main_page {
@@ -97,7 +99,6 @@ h2 {
     margin: 10vh auto;
     width: clamp(900px, 80%, 1200px);
     min-height: 500px;
-    margin-top: 50vh;
 }
 
 /* Header */
@@ -107,7 +108,7 @@ header {
     color: transparent;
 }
 
-/* Left Sidebar and vertical octagon*/
+/* #region Left Sidebar and vertical octagon*/
 #left_sidebar {
     background-color: var(--Main-color);
     grid-column: 1 / 2;
@@ -211,21 +212,21 @@ header {
     display: block;
     height: 100%;
 }
+/* #endregion */
 
-/* Main */
-main {
+/* #region Validation state */
+#validation {
     background-color: var(--Main-color);
     grid-column: 2 / 3;
     padding: var(--size-1);
-    display: flex;
+    display: none;
     flex-direction: column;
     margin: var(--main-margin);
     box-shadow: 0px 0px 0px 3px black;
     min-width: 500px;
 }
-
-main .type_dash { border-bottom: 1px black solid; }
-main #inputs_div {
+#validation .type_dash { border-bottom: 1px black solid; }
+#validation #inputs_div {
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -234,13 +235,13 @@ main #inputs_div {
     column-gap: 2em;
     justify-items: center;
 }
-main .input-div {
+#validation .input-div {
     display: grid;
     grid-template-columns: 1fr auto;
     justify-items: center;
     width: var(--size-6);
 }
-main label > div {
+#validation label > div {
     display: block;
     text-align: center;
     font-family: 'Titan One', cursive;
@@ -248,7 +249,7 @@ main label > div {
     letter-spacing: 2px;
     text-shadow: -1px -2px 0px black, -2px 1px 0px black, 2px 2px 0px black, 0px 3px 0px black;
 }
-main label span {
+#validation label span {
     height: var(--size-3);
     width: var(--size-3);
     display: block;
@@ -257,7 +258,7 @@ main label span {
     background: var(--font-color);
     border-radius: 50px;
 }
-main input[type=text] {
+#validation input[type=text] {
     width: 100%;
     margin: auto;
     display: block;
@@ -266,11 +267,11 @@ main input[type=text] {
     color: var(--font-color);
     grid-column: 1;
 }
-main input[type=checkbox] {
+#validation input[type=checkbox] {
     opacity: 0;
     position: absolute;
 }
-main button {
+#validation button {
     width: fit-content;
     margin: auto;
     margin-top: 10px;
@@ -287,8 +288,9 @@ main button {
     
     
 }
+/* #endregion */
 
-/* Right Sidebar and CHAT */
+/* #region Right Sidebar and CHAT */
 #right_sidebar {
     background-color: var(--Main-color);
     grid-column: 3 / 4;
@@ -298,8 +300,6 @@ main button {
     box-shadow: 0px 13px 0px 5px var(--Outline), 0px -3px 0px 5px var(--Outline), 0px 17px 0px 6px black;
     min-width: 154px;
 }
-
-
 #right_sidebar h3 {
     text-align: center;
     font-weight: 100;
@@ -321,6 +321,7 @@ main button {
     background-color: var(--color-5);
     color: var(----font-color);
 }
+/* #endregion */
 
 /* Footer */
 footer {
