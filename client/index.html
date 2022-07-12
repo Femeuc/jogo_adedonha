@@ -13,11 +13,11 @@
         <section>
             <h2>Adedonha</h2>
             <div id="enter_room">
-                <input type="text" placeholder="Seu nome...">
+                <input type="text" placeholder="Seu nome..." autofocus>
                 <input type="text" placeholder="Nome da sala...">
                 <div>
-                    <button>Criar</button>
-                    <button>Entrar</button>
+                    <button onclick="create_room()">Criar</button>
+                    <button onclick="enter_room()">Entrar</button>
                 </div>
             </div>
         </section>
@@ -148,5 +148,7 @@
     <script>
         var socket = io();
     </script>
+    <script src="./socketio_events.js"></script>
+    <script src="./scripts.js"></script>
 </body>
 </html>
