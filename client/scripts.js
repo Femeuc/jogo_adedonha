@@ -6,12 +6,21 @@ function server_state() {
 
 document.querySelector("#send_message").addEventListener("keydown", function(event) {
     let ul_chat = document.querySelector('ul#chat');
+    if(event.target.value.length < 1) return;
     if (event.key === "Enter") {
-        ul_chat.innerHTML += `<li>${event.target.value}</li>`;
+        ul_chat.innerHTML += `<li>${localStorage.getItem('username')}: ${event.target.value.trim()}</li>`;
         console.log(`MESSAGE SENT: ${event.target.value}`);
         event.target.value = '';
     }
 });
+on_page_load();
+function on_page_load() {
+    const username = localStorage.getItem('username');
+    if(username) {
+        document.querySelector('#username_input').value = username;
+    }
+    set_browser_id();
+}
 
 /* #region Connection related functions */
 function create_room() {
@@ -29,6 +38,7 @@ function create_room() {
             alert('Já existe uma sala com esse nome');
             return;
         } 
+        localStorage.setItem('username', username);
         console.log(`User "${username}" creates room named "${room}"`);
         load_room( room_obj );
     });
@@ -53,7 +63,7 @@ function enter_room() {
             alert('Nome já está em uso');
             return;
         }
-
+        localStorage.setItem('username', username);
         console.log(`User "${username}" enters room named "${room}"`);
         load_room( room_obj );
     });
@@ -84,16 +94,20 @@ function update_room(users) {
 function update_left_bar(users) {
     const players_ul = document.querySelector('#left_sidebar ul');
     players_ul.innerHTML = '';
+    const username = localStorage.getItem('username');
 
     users.forEach(user => {
-        players_ul.innerHTML += 
-        `<div class="player">
+        let html_string = '';
+        username == user.name ? html_string += 
+        `<div class="player" style="box-shadow: 0px 0px 5px 5px #0e593e;">` : html_string += '<div class="player">';
+        html_string += `
             <img src="./images/${get_random_avatar_name()}" alt="">
             <div>
-              <div>30pts.</div>
-              <span>${user.name}</span>
+              <div>0pts.</div>
+             <span>${user.name}</span>
             </div>
-        </div>`
+        </div>`;
+        players_ul.innerHTML += html_string;
     });
 }
 
@@ -110,9 +124,12 @@ function load_game_state_0(users) {
 }
 /* #endregion */
 
+function random_int(max, min=0) {
+    return Math.floor(Math.random() * (max + 1)) + min;
+}
+
 function get_random_avatar_name() {
-    const random = Math.floor(Math.random() * 12);
-    return `among_${random}.PNG`;
+    return `among_${ random_int(11) }.PNG`;
 }
 
 function toggle_checkbox( span ) {
@@ -138,3 +155,9 @@ function add_custom_topic() {
     input.value = '';
 }
 
+function set_browser_id() {
+    const browser_id = localStorage.getItem('browser_id');
+    if(!browser_id) {
+        localStorage.setItem('browser_id', random_int(1000));
+    }
+}

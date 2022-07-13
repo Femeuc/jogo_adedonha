@@ -219,6 +219,7 @@ main h2 {
     height: var(--size-0);
     padding-left: var(--size-4);
     padding-bottom: var(--size-1);
+    font-size: 20px;
 }
 .player > div > span {
     white-space: nowrap;
