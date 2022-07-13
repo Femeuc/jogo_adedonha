@@ -11,3 +11,4 @@ npm start script
 
 html and css of the page
 rooms creation and joining
+ui game state 0 updates

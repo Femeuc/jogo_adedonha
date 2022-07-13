@@ -9,6 +9,7 @@
 </head>
 <body>
 
+    <!--#region Home page -->
     <div id="home_page">
         <section>
             <h2>Adedonha</h2>
@@ -22,6 +23,7 @@
             </div>
         </section>
     </div>
+    <!--#endregion-->
 
    <div id="main_page">
     
@@ -37,158 +39,165 @@
 
      <main>
         <section id="preferences">
+            <!--#region Alphabet Letters -->
             <div>
                 <h2>Letras permitidas</h2>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="A" id="A">
-                    <label for="A">A</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>A</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="B" id="B">
-                    <label for="B">B</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>B</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="C" id="C">
-                    <label for="C">C</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>C</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="D" id="D">
-                    <label for="D">D</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>D</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="E" id="E">
-                    <label for="E">E</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>E</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="F" id="F">
-                    <label for="F">F</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>F</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="G" id="G">
-                    <label for="G">G</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>G</span>
                 </span>
-                <span>
-                    <input onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="H" id="H">
-                    <label for="H">H</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox"> <input type="checkbox"> </span>
+                    <span>H</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="I" id="I">
-                    <label for="I">I</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>I</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="J" id="J">
-                    <label for="J">J</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>J</span>
                 </span>
-                <span>
-                    <input onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="K" id="K">
-                    <label for="K">K</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox"> <input type="checkbox"> </span>
+                    <span>K</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="L" id="L">
-                    <label for="L">L</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>L</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="M" id="M">
-                    <label for="M">M</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>M</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="N" id="N">
-                    <label for="N">N</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>N</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="O" id="O">
-                    <label for="O">O</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>O</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="P" id="P">
-                    <label for="P">P</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>P</span>
                 </span>
-                <span>
-                    <input onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="Q" id="Q">
-                    <label for="Q">Q</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox"> <input type="checkbox"> </span>
+                    <span>Q</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="R" id="R">
-                    <label for="R">R</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>R</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="S" id="S">
-                    <label for="S">S</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>S</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="T" id="T">
-                    <label for="T">T</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>T</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="U" id="U">
-                    <label for="U">U</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>U</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="V" id="V">
-                    <label for="V">V</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>V</span>
                 </span>
-                <span>
-                    <input onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="X" id="X">
-                    <label for="X">X</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox"> <input type="checkbox"> </span>
+                    <span>X</span>
                 </span>
-                <span>
-                    <input onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="W" id="W">
-                    <label for="W">W</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox"> <input type="checkbox"> </span>
+                    <span>W</span>
                 </span>
-                <span>
-                    <input onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="Y" id="Y">
-                    <label for="Y">Y</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox"> <input type="checkbox"> </span>
+                    <span>Y</span>
                 </span>
-                <span>
-                    <input onchange="checkbox_onchange(this, 'letter')" class="letter" type="checkbox" value="Z" id="Z">
-                    <label for="Z">Z</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox"> <input type="checkbox"> </span>
+                    <span>Z</span>
                 </span>
             </div>
+            <!-- #endregion-->
+            <!--#region Default topics-->
             <div>
                 <h2>Temas padrões</h2>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'standard')" class="standard" type="checkbox" value="países" id="país">
-                    <label for="país">país</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>Animais</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'standard')" class="standard" type="checkbox" value="adjetivo" id="adjetivo">
-                    <label for="adjetivo">adjetivo</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>Países</span>
                 </span>
-                <span>
-                    <input onchange="checkbox_onchange(this, 'standard')" class="standard" type="checkbox" value="jogo" id="jogo">
-                    <label for="jogo">jogo</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>FVL (fruts, legumes, verduras)</span>
                 </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'standard')" class="standard" type="checkbox" value="comida" id="comida">
-                    <label for="comida">comida</label>
-                </span>
-                <span>
-                    <input checked onchange="checkbox_onchange(this, 'standard')" class="standard" type="checkbox" value="animal" id="animal">
-                    <label for="animal">animal</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>Objeto</span>
                 </span>
             </div>
+            <!--#endregion-->
+            <!--#region Custom topics-->
             <div id="custom_topics_div">
                 <h2>Temas personalizados</h2>
-                <span>
-                    <input onchange="checkbox_onchange(this, 'custom')" class="custom" type="checkbox" value="doença" id="doença">
-                    <label for="doença">doença</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>Doenças</span>
                 </span>
-                <span>
-                    <input onchange="checkbox_onchange(this, 'custom')" class="custom" type="checkbox" value="carro" id="carro">
-                    <label for="carro">carro</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>Rimas com ÃO</span>
                 </span>
-                <span>
-                    <input onchange="checkbox_onchange(this, 'custom')" class="custom" type="checkbox" value="time de futebol" id="time de futebol">
-                    <label for="time de futebol">time de futebol</label>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>Rimas com ADE</span>
+                </span>
+                <span class="checkbox_container" onclick="toggle_checkbox(this)">
+                    <span class="checkbox checked"> <input type="checkbox" checked> </span>
+                    <span>Rimas com EZA</span>
                 </span>
             </div>
+            <!--#endregion-->
             <div id="add_custom_topic_div">
                 <input type="text" placeholder="Tema personalizado..." id="custom_topic">
                 <button id="custom_topic" onclick="add_custom_topic()">Adicionar</button>
                 <button id="start_button" onclick="start_game()">Começar</button>
             </div>
         </section>
-        
+       
+        <!--#region Validation -->
         <section id="validation">
             <h2>LETRA <span class="type_dash">&nbsp;&nbsp;&nbsp;</span></h2>
             <div id="inputs_div">
@@ -245,13 +254,14 @@
             </div>
             <button>PRÓXIMO</button>
         </section>
+        <!--#endregion-->
      </main>
 
      <div id="right_sidebar">
         <h3>Bate-papo</h3>
-        <ul>
+        <ul id="chat">
         </ul>
-        <input type="text" placeholder="Mensagem...">
+        <input type="text" placeholder="Mensagem..." id="send_message">
      </div>
 
    </div>
