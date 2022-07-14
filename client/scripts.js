@@ -33,7 +33,7 @@ function create_room() {
         return;
     }
 
-    socket.emit('CREATE_ROOM', username, room, (success, room_obj) => {
+    socket.emit('CREATE_ROOM', username, room, localStorage.getItem('browser_id'), (success, room_obj) => {
         if( !success ) {
             alert('Já existe uma sala com esse nome');
             return;
@@ -54,7 +54,7 @@ function enter_room() {
         return;
     }
 
-    socket.emit('ENTER_ROOM', username, room, (was_found, is_name_available, room_obj) => {
+    socket.emit('ENTER_ROOM', username, room, localStorage.getItem('browser_id'), (was_found, is_name_available, room_obj) => {
         if( !was_found ) {
             alert('Sala não encontrada');
             return;

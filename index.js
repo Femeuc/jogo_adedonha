@@ -17,7 +17,7 @@ rooms = [];
 //   name: username
 // ]},
 // game_state: 0
-
+// browser_ids: []
 // cors config
 app.use(cors({
     origin: '*'
@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
     res.render('index.html');
 });
 
-server.listen( process.env.PORT , "0.0.0.0" || "localhost", () => {
+server.listen( process.env.PORT || "0.0.0.0" || "localhost", () => {
     console.log('listening on port ' + process.env.PORT);
 });  
 
@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
         callback( get_server_state() );
     });
 
-    socket.on('CREATE_ROOM', (username, room, callback) => {
+    socket.on('CREATE_ROOM', (username, room, browser_id, callback) => {
         if( username.length < 1 || room.length < 1 ) {
             console.log('User tried empty username and empty room');
             return;
@@ -53,11 +53,11 @@ io.on('connection', (socket) => {
         socket.join(room);
         console.log(`User "${username}" creates room named "${room}"`);
 
-        add_user_to_room( room, socket.id, username );
+        add_user_to_room( room, socket.id, username, browser_id );
         callback( true, get_room(room) );
     });
 
-    socket.on('ENTER_ROOM', (username, room, callback) => {
+    socket.on('ENTER_ROOM', (username, room, browser_id, callback) => {
         if( username.length < 1 || room.length < 1 ) {
             console.log('User tried empty username and empty room');
             return;
@@ -73,7 +73,7 @@ io.on('connection', (socket) => {
         socket.join(room);
         console.log(`User "${username}" enters room named "${room}"`);
 
-        add_user_to_room( room, socket.id, username );
+        add_user_to_room( room, socket.id, username, browser_id );
         socket.to(room).emit("JOIN_ROOM", get_room(room), username );
         callback(true, true, get_room(room) );
     });
@@ -87,6 +87,10 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log(`${socket.id} has disconnected`);
+    });
+
+    socket.on('reconnect', () => {
+        console.log(`${socket.id} has reconnected`);
     });
 });
 /* #endregion */
@@ -224,13 +228,15 @@ function is_name_available(name, room) {
     return !users_in_the_room.includes(name);
 }
 
-function add_user_to_room( room, id, name ) {
+function add_user_to_room( room, id, name, browser_id ) {
     for (let i = 0; i < rooms.length; i++) {
         if( rooms[i].name == room ) {
             rooms[i].users.push({
                 id,
-                name
+                name,
+                browser_id
             });
+            rooms[i].browser_ids.push(browser_id);
             return;
         }
     }
@@ -242,7 +248,8 @@ function add_user_to_room( room, id, name ) {
             id,
             name
         }], 
-        game_state: 0
+        game_state: 0,
+        browser_ids: [browser_id]
     });
 }
 /* #endregion */
