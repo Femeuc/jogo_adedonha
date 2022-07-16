@@ -1,3 +1,8 @@
+console.log('check 1', socket.connected);
+socket.on('connect', function() {
+  console.log('check 2', socket.connected);
+});
+
 function server_state() {
     socket.emit("SERVER_STATE", (state) => {
         console.log(state);
