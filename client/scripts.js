@@ -1,6 +1,14 @@
-console.log('check 1', socket.connected);
 socket.on('connect', function() {
-  console.log('check 2', socket.connected);
+  console.log('CONNECT:', socket.connected);
+});
+socket.on('connect_error', () => {
+    console.log('CONNECT_ERROR');
+})
+socket.on('connect_timeout', () => {
+    console.log('RECONNECT');
+});
+socket.on('reconnecting', () => {
+    console.log('reconnecting ');
 });
 
 function server_state() {
