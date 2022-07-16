@@ -86,6 +86,10 @@ const checkboxes = [
 io.on('connection', (socket) => {
     console.log(`${socket.id} connected`);
 
+    socket.on('RECONNECT', (username, browser_id) => {
+        handle_reconnection( socket, username, browser_id );
+    });
+
     socket.on('SERVER_STATE', callback => {
         callback( get_server_state() );
     });
@@ -137,6 +141,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on("disconnecting", () => {
+        console.log('disconnecting..');
         const room_name = find_room_by_user_id( socket.id );
         const username = get_id_username(socket.id);
         remove_player( socket.id );
@@ -213,6 +218,8 @@ function remove_player( id ) {
            for (let j = 0; j < rooms[i].users.length; j++) {
               if( rooms[i].users[j].id == id) {
                   console.log(`REMOVING USER ${rooms[i].users[j]}`);
+                  const browser_id = rooms[i].users[j].browser_id;
+                  rooms[i].browser_ids.push( browser_id );
                   rooms[i].users.splice(j, 1);
               }
            }
@@ -231,6 +238,13 @@ function handle_checkbox_change(socket, name, checked, type) { // type
     const room = find_room_by_user_id( socket.id );
     socket.to(room).emit("CHECKBOX_CHANGE", checkboxes);
     console.log(`CHECKBOX_CHANGE: ${name}`);
+}
+
+function handle_reconnection( socket, username, browser_id ) {
+    reconnect_user( socket.id, username, browser_id );
+    const room = find_room_by_user_id( socket.id );
+    io.to(room).emit("RECONNECT", get_room(room));
+    console.log('RECONNECT: ' + username);
 }
 /* #endregion */
 
@@ -264,6 +278,17 @@ function find_room_by_user_id( id ) {
     return false;
 }
 
+function find_room_by_browser_id( browser_id ) {
+    const all_rooms = get_all_rooms();
+    for (let i = 0; i < all_rooms.length; i++) {
+        const ids = get_room( all_rooms[i] ).browser_ids;
+        if( ids.includes( browser_id )) {
+            return all_rooms[i];
+        }
+    }
+    return false;
+}
+
 function does_room_exist( room ) {
     const rooms = get_all_rooms();
     if( rooms.length < 1 ) return false;
@@ -278,7 +303,6 @@ function get_ids_of_users_from_room( room ) {
        ids.push( user.id );
     });
     return ids;
-    //return Array.from(io.sockets.adapter.rooms.get(room));
 }
 
 function is_name_available(name, room) {
@@ -298,7 +322,6 @@ function add_user_to_room( room, id, name, browser_id ) {
                 name,
                 browser_id
             });
-            rooms[i].browser_ids.push(browser_id);
             return;
         }
     }
@@ -308,11 +331,19 @@ function add_user_to_room( room, id, name, browser_id ) {
         name: room,
         users: [{
             id,
-            name
+            name, 
+            browser_id
         }], 
         game_state: 0,
-        browser_ids: [browser_id],
+        browser_ids: [],
         checkboxes: checkboxes
     });
+}
+
+function reconnect_user( socket_id, username, browser_id ) {
+    const room = find_room_by_browser_id( browser_id );
+    if( !room ) return;
+
+    add_user_to_room(room, socket_id, username, browser_id);
 }
 /* #endregion */

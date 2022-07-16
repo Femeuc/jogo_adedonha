@@ -1,24 +1,21 @@
+/* GLOBAL VARIABLES */
+let reconnection = false;
+
 socket.on('connect', function() {
   console.log('CONNECT:', socket.connected);
+
+  if(reconnection) {
+    socket.emit('RECONNECT', localStorage.getItem('username'), localStorage.getItem('browser_id'));
+    reconnection = false;
+  }
 });
 socket.on('connect_error', (error) => {
+    console.log('error');
     console.log(`connect_error: ${error}`);
+    document.body.style.pointerEvents = 'none';
+    display_trying_to_reconnect_UI();
+    reconnection = true;
 })
-socket.on('connect_timeout', () => {
-    console.log('RECONNECT');
-});
-socket.on('reconnecting', (n) => {
-    console.log('reconnecting ' + n);
-});
-socket.on('reconnect', (n) => {
-    console.log('reconnect' + n);
-});
-socket.on('reconnect_attempt', () => {
-    console.log('reconnect_attempt');
-});
-socket.on('reconnect_error', (error) => {
-    console.log('reconnect_error' + error);
-});
 
 function server_state() {
     socket.emit("SERVER_STATE", (state) => {
@@ -157,6 +154,22 @@ function update_checkboxes(checkboxes) {
         letters.innerHTML += get_checkbox_span_html(item, checkboxes[2]);
     }
 }
+function display_trying_to_reconnect_UI() {
+    if( document.querySelector('#reconnection') ) {
+        return;
+    }
+    const reconnection_div = get_reconnection_html();
+    document.body.insertBefore(reconnection_div, document.body.firstChild);
+}
+function hide_reconnection_UI() {
+    console.log('aqui');
+    const div = document.querySelector('#reconnection');
+    if(!div) {
+        return;
+    }   
+    div.style.display = 'none';
+}
+
 /* #endregion */
 
 function load_game_state_0(users) {
@@ -234,7 +247,6 @@ function get_html( i, users ) {
     </div>`;
     return html_string;
 }
-
 function get_checkbox_span_html(name, checkboxes) {
     let checked = '';
     if (checkboxes[name]) {
@@ -246,5 +258,39 @@ function get_checkbox_span_html(name, checkboxes) {
         <span class="checkbox ${checked}"> <input type="checkbox" ${checked}> </span>
         <span>${name}</span>
     </span>`;
+}
+function get_reconnection_html() {
+    const div = document.createElement('DIV');
+    //#region DIV styling 
+    div.id = 'reconnection';
+    div.style.position = 'absolute';
+    div.style.zIndex = 2;
+    div.style.width = 'fit-content';
+    div.style.margin = '0px auto';
+    div.style.right = '0';
+    div.style.left = '0';
+    div.style.top = '0';
+    div.style.padding = '10px 32px';
+    div.style.display = 'flex';
+    div.style.alignItems = 'center';
+    div.style.borderRadius = '100px';
+    div.style.marginTop = '1em';
+    div.style.backgroundColor = 'var(--Outline)';
+    div.innerHTML = `
+        <div class="loader" style="
+                                border: 5px solid #7babb2;
+                                border-top: 5px solid #ffffff;
+                                border-radius: 50%;
+                                width: 30px;
+                                height: 30px;
+                                animation: spin 1s linear infinite;
+                                margin-right: 5px;">
+        </div>
+        <div style="margin-left: 5px; font-size: 22px;">
+            Reconectando...
+        </div>
+    `
+    //#endregion
+    return div;
 }
 /* #endregion */
