@@ -1,14 +1,23 @@
 socket.on('connect', function() {
   console.log('CONNECT:', socket.connected);
 });
-socket.on('connect_error', () => {
-    console.log('CONNECT_ERROR');
+socket.on('connect_error', (error) => {
+    console.log(`connect_error: ${error}`);
 })
 socket.on('connect_timeout', () => {
     console.log('RECONNECT');
 });
-socket.on('reconnecting', () => {
-    console.log('reconnecting ');
+socket.on('reconnecting', (n) => {
+    console.log('reconnecting ' + n);
+});
+socket.on('reconnect', (n) => {
+    console.log('reconnect' + n);
+});
+socket.on('reconnect_attempt', () => {
+    console.log('reconnect_attempt');
+});
+socket.on('reconnect_error', (error) => {
+    console.log('reconnect_error' + error);
 });
 
 function server_state() {
