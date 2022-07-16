@@ -49,6 +49,9 @@ h2 {
     --font-color: #ffffff;
     --dark-color: black;
 }
+.host_only {
+    display: none !important;
+}
 /* #endregion */
 
 /* #region home page */

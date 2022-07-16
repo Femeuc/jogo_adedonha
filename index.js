@@ -9,15 +9,6 @@ const path = require('path');
 const cors = require('cors');
 require('dotenv').config()
 
-// GLOBAL VARIABLES
-rooms = [];
-// name: room,
-// users: [{
-//   id: socket.id,
-//   name: username
-// ]},
-// game_state: 0
-// browser_ids: []
 // cors config
 app.use(cors({
     origin: '*'
@@ -31,6 +22,65 @@ app.get('/', (req, res) => {
 server.listen( process.env.PORT || "0.0.0.0" || "localhost", () => {
     console.log('listening on port ' + process.env.PORT);
 });  
+
+// GLOBAL VARIABLES
+const rooms = [];
+// name: room,
+// users: [{
+//   id: socket.id,
+//   name: username
+// ]},
+// game_state: 0
+// browser_ids: []
+// checkboxes: checkboxes
+const checkboxes = [
+    // default
+    {
+        Animal: true,
+        Fruta: true,
+        Nome: true,
+        FVL: true,
+        CEP: true,
+        Objeto: true
+    },
+    // custom
+    {
+        Time_futebol: true,
+        Rima_com_ÃO: true,
+        Rima_com_ADE: true,
+        Rima_com_EZA: true,
+        Cor: false
+    },
+    // letters
+    {
+        A: true,
+        B: true,
+        C: true,
+        D: true,
+        E: true,
+        F: true,
+        G: true,
+        H: false,
+        I: true, 
+        J: true,
+        K: false,
+        L: true,
+        M: true,
+        N: true, 
+        O: true,
+        P: true,
+        Q: false,
+        R: true,
+        S: true, 
+        T: true,
+        U: true,
+        V: true,
+        X: false,
+        W: false,
+        Y: false,
+        Z: false
+    }
+]
 
 /* #region io events */
 io.on('connection', (socket) => {
@@ -78,6 +128,14 @@ io.on('connection', (socket) => {
         callback(true, true, get_room(room) );
     });
 
+    socket.on('NEW_CHECKBOX', (name) => {
+        handle_checkbox_change( socket, name, true, 1 );
+    });
+
+    socket.on('CHECKBOX_CHANGE', (name, checked, type) => {
+        handle_checkbox_change( socket, name, checked, type );
+    })
+
     socket.on("disconnecting", () => {
         const room_name = find_room_by_user_id( socket.id );
         const username = get_id_username(socket.id);
@@ -87,10 +145,6 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log(`${socket.id} has disconnected`);
-    });
-
-    socket.on('reconnect', () => {
-        console.log(`${socket.id} has reconnected`);
     });
 });
 /* #endregion */
@@ -165,6 +219,19 @@ function remove_player( id ) {
         }
     }
 }
+function is_host( id ) {
+    const room = find_room_by_user_id( id );
+    const room_obj = get_room( room );
+    return room_obj.users[0].id == id;
+}
+
+function handle_checkbox_change(socket, name, checked, type) { // type 
+    if ( !is_host( socket.id ) ) return;
+    checkboxes[type][name] = checked;
+    const room = find_room_by_user_id( socket.id );
+    socket.to(room).emit("CHECKBOX_CHANGE", checkboxes);
+    console.log(`CHECKBOX_CHANGE: ${name}`);
+}
 /* #endregion */
 
 
@@ -175,11 +242,6 @@ function get_all_rooms() {
         rooms_array.push(room.name);
     });
     return rooms_array;
-/*
-    const arr = Array.from(io.sockets.adapter.rooms);
-    const filtered = arr.filter(room => !room[1].has(room[0]));
-    const res = filtered.map(i => i[0]);
-    return res;*/
 }
 
 function get_room( name ) {
@@ -249,7 +311,8 @@ function add_user_to_room( room, id, name, browser_id ) {
             name
         }], 
         game_state: 0,
-        browser_ids: [browser_id]
+        browser_ids: [browser_id],
+        checkboxes: checkboxes
     });
 }
 /* #endregion */

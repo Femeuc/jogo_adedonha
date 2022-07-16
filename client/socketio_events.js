@@ -7,3 +7,8 @@ socket.on('LEFT_ROOM', (room_obj, username) => {
     console.log(`${username} has left ${room_obj.name}`);
     update_room(room_obj.users);
 });
+
+socket.on('CHECKBOX_CHANGE', checkboxes => {
+    console.log(`CHECKBOX_CHANGE`);
+    update_checkboxes(checkboxes);
+})
