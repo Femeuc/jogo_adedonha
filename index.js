@@ -140,6 +140,10 @@ io.on('connection', (socket) => {
         handle_checkbox_change( socket, name, checked, type );
     })
 
+    socket.on('CHAT_MESSAGE', message_li => {
+        handle_chat_event(socket, message_li);
+    });
+
     socket.on("disconnecting", () => {
         console.log('disconnecting..');
         const room_name = find_room_by_user_id( socket.id );
@@ -241,10 +245,16 @@ function handle_checkbox_change(socket, name, checked, type) { // type
 }
 
 function handle_reconnection( socket, username, browser_id ) {
-    reconnect_user( socket.id, username, browser_id );
+    reconnect_user( socket, username, browser_id );
     const room = find_room_by_user_id( socket.id );
     io.to(room).emit("RECONNECT", get_room(room));
     console.log('RECONNECT: ' + username);
+}
+
+function handle_chat_event( socket, message_li ) {
+    const room = find_room_by_user_id( socket.id );
+    socket.to(room).emit('CHAT_MESSAGE', message_li);
+    console.log(`MESSAGE: ${message_li}`);
 }
 /* #endregion */
 
@@ -340,10 +350,10 @@ function add_user_to_room( room, id, name, browser_id ) {
     });
 }
 
-function reconnect_user( socket_id, username, browser_id ) {
+function reconnect_user( socket, username, browser_id ) {
     const room = find_room_by_browser_id( browser_id );
     if( !room ) return;
-
-    add_user_to_room(room, socket_id, username, browser_id);
+    socket.join(room);
+    add_user_to_room(room, socket.id, username, browser_id);
 }
 /* #endregion */

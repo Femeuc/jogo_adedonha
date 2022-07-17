@@ -1,4 +1,5 @@
 socket.on('JOIN_ROOM', (room_obj, username) => {
+    is_host = Boolean(room_obj.users[0].name == username);
     console.log(`${username} entered room ${room_obj.name}`);
     load_room(room_obj);
 })
@@ -20,3 +21,7 @@ socket.on('CHECKBOX_CHANGE', checkboxes => {
     console.log(checkboxes);
     update_checkboxes(checkboxes);
 })
+
+socket.on('CHAT_MESSAGE', message_li => {
+    handle_chat_message(message_li);
+});

@@ -1,5 +1,6 @@
 /* GLOBAL VARIABLES */
 let reconnection = false;
+let is_host = false;
 
 socket.on('connect', function() {
   console.log('CONNECT:', socket.connected);
@@ -35,8 +36,10 @@ document.querySelector("#send_message").addEventListener("keydown", function(eve
     let ul_chat = document.querySelector('ul#chat');
     if(event.target.value.length < 1) return;
     if (event.key === "Enter") {
-        ul_chat.innerHTML += `<li>${localStorage.getItem('username')}: ${event.target.value.trim()}</li>`;
+        const message_li = `<li>${localStorage.getItem('username')}: ${event.target.value.trim()}</li>`;
+        ul_chat.innerHTML += message_li;
         console.log(`MESSAGE SENT: ${event.target.value}`);
+        socket.emit('CHAT_MESSAGE', message_li);
         event.target.value = '';
     }
 });
@@ -113,11 +116,12 @@ function update_room(room_obj) {
     update_checkboxes(room_obj.checkboxes);
 }
 function update_host(users) {
-    if( users[0].name == localStorage.getItem('username') ) {
+    if( is_host ) {
         const host_only = document.querySelectorAll('.host_only');
         host_only.forEach( e => {
             e.classList.remove("host_only");
         });
+        return;
     }
 }
 function update_left_bar(users) {
@@ -135,6 +139,7 @@ function update_chat_bar(users) {
     users.forEach(user => {
         chat_ul.innerHTML += `<li>${user.name} está conectado</li>`;
     });
+    chat_ul.innerHTML += `<li>${users[0].name} é o HOST</li>`;
 }
 function update_checkboxes(checkboxes) {
     const default_c = document.querySelector('#default');
@@ -153,6 +158,10 @@ function update_checkboxes(checkboxes) {
     for (const item in checkboxes[2]) { // letters
         letters.innerHTML += get_checkbox_span_html(item, checkboxes[2]);
     }
+}
+function handle_chat_message( message_li ) {
+    let ul_chat = document.querySelector('ul#chat');
+    ul_chat.innerHTML += message_li;
 }
 function display_trying_to_reconnect_UI() {
     if( document.querySelector('#reconnection') ) {
@@ -185,6 +194,7 @@ function get_random_avatar_name() {
 }
 
 function toggle_checkbox( span ) {
+    if( !is_host ) return;
     const input_span = span.querySelectorAll('span')[0];
     const name = span.querySelectorAll('span')[1];
     const input = input_span.querySelector('input');
