@@ -247,6 +247,7 @@ function handle_checkbox_change(socket, name, checked, type) { // type
 function handle_reconnection( socket, username, browser_id ) {
     reconnect_user( socket, username, browser_id );
     const room = find_room_by_user_id( socket.id );
+    console.log(socket.id, username, browser_id, room);
     io.to(room).emit("RECONNECT", get_room(room));
     console.log('RECONNECT: ' + username);
 }
